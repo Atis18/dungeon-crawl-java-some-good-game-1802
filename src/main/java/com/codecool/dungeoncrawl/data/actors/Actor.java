@@ -19,7 +19,7 @@ public abstract class Actor implements Drawable {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        }
+        } 
     }
 
     public int getHealth() {
