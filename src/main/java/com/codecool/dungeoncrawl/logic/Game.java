@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.data.database.DatabaseManager;
 import com.codecool.dungeoncrawl.ui.UI;
 import com.codecool.dungeoncrawl.ui.keyeventhandler.*;
 import javafx.application.Application;
@@ -18,6 +19,8 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        DatabaseManager.initializeDatabase();
+
         this.keyHandlers = Set.of(new Up(), new Down(), new Left(), new Right());
         this.logic = new GameLogic();
         this.ui = new UI(logic, keyHandlers);

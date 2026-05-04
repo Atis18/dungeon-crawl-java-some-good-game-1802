@@ -19,7 +19,10 @@ public abstract class Actor implements Drawable {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        } 
+            if(nextCell.getType() == CellType.SAVE){
+                System.out.println("mentés");
+            }
+        }
     }
 
     public int getHealth() {

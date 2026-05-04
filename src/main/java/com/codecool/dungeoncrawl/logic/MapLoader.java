@@ -39,6 +39,12 @@ MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Skeleton(cell);
                             break;
+                        case 'f':
+                            cell.setType(CellType.SAVE);
+                            break;
+                        case 'l':
+                            cell.setType(CellType.LOAD);
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
