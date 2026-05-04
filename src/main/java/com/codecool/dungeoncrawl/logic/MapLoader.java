@@ -9,7 +9,8 @@ import com.codecool.dungeoncrawl.data.actors.Skeleton;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class MapLoader {
+public class
+MapLoader {
     public static GameMap loadMap() {
         InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
