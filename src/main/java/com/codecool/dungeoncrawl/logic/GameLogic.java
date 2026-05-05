@@ -3,12 +3,20 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.data.GameMap;
 import com.codecool.dungeoncrawl.data.actors.Player;
+import com.codecool.dungeoncrawl.data.gamestate.GameState;
+import com.codecool.dungeoncrawl.data.gamestate.GameStateHandler;
 
 public class GameLogic {
+    private static GameLogic logic;
     private GameMap map;
 
     public GameLogic() {
+        logic = this;
         this.map = MapLoader.loadMap();
+    }
+
+    public static GameLogic getLogic(){
+        return logic;
     }
 
     public double getMapWidth() {
@@ -37,7 +45,19 @@ public class GameLogic {
 
     public void saveGame(){
         Player player = map.getPlayer();
+        GameStateHandler handler = new GameStateHandler();
 
+        handler.saveToDB(map.toMapString(), player.getX(), player.getY(), player.getHealth());
+        System.out.println("Game saved");
+    }
 
+    public void loadGame(){
+        GameStateHandler handler = new GameStateHandler();
+        GameState state = handler.loadFromDB();
+
+        if (state != null){
+            this.map = MapLoader.loadMap(state.map);
+            map.getPlayer().setHealth(state.playerHealth);
+        }
     }
 }

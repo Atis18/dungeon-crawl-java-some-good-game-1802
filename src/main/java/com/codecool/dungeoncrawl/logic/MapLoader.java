@@ -58,4 +58,50 @@ MapLoader {
         return map;
     }
 
+    public static GameMap loadMap(String map) {
+        Scanner scanner = new Scanner(map);
+        int width = scanner.nextInt();
+        int height = scanner.nextInt();
+
+        scanner.nextLine(); // empty line
+
+        GameMap mapFromSQL = new GameMap(width, height, CellType.EMPTY);
+        for (int y = 0; y < height; y++) {
+            String line = scanner.nextLine();
+            for (int x = 0; x < width; x++) {
+                if (x < line.length()) {
+                    Cell cell = mapFromSQL.getCell(x, y);
+                    switch (line.charAt(x)) {
+                        case ' ':
+                            cell.setType(CellType.EMPTY);
+                            break;
+                        case '#':
+                            cell.setType(CellType.WALL);
+                            break;
+                        case '.':
+                            cell.setType(CellType.FLOOR);
+                            break;
+                        case 's':
+                            cell.setType(CellType.FLOOR);
+                            new Skeleton(cell);
+                            break;
+                        case 'f':
+                            cell.setType(CellType.SAVE);
+                            break;
+                        case 'l':
+                            cell.setType(CellType.LOAD);
+                            break;
+                        case '@':
+                            cell.setType(CellType.FLOOR);
+                            mapFromSQL.setPlayer(new Player(cell));
+                            break;
+                        default:
+                            throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
+                    }
+                }
+            }
+        }
+        return mapFromSQL;
+    }
+
 }
