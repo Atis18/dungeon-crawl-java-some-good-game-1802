@@ -29,6 +29,13 @@ public class GameLogic {
         return Integer.toString(map.getPlayer().getHealth());
     }
 
+    public String getPlayerName() {
+        return map.getPlayer().getName();
+    }
+
+    public void setPlayerName(String name) {
+        map.getPlayer().setName(name);
+    }
 
     public GameMap getMap() {
         return map;

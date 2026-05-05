@@ -23,6 +23,20 @@ class ActorTest {
     }
 
     @Test
+    void playerHasName() {
+        Player player = new Player(gameMap.getCell(1, 1), "  Ada  ");
+
+        assertEquals("Ada", player.getName());
+    }
+
+    @Test
+    void playerUsesDefaultNameWhenNameIsBlank() {
+        Player player = new Player(gameMap.getCell(1, 1), " ");
+
+        assertEquals(Player.DEFAULT_NAME, player.getName());
+    }
+
+    @Test
     void cannotMoveIntoWall() {
         gameMap.getCell(2, 1).setType(CellType.WALL);
         Player player = new Player(gameMap.getCell(1, 1));

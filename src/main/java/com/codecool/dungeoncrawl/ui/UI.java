@@ -60,6 +60,7 @@ public class UI {
                 }
             }
         }
+        mainStage.setNameLabelText(logic.getPlayerName());
         mainStage.setHealthLabelText(logic.getPlayerHealth());
     }
 }

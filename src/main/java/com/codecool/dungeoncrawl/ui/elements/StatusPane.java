@@ -9,11 +9,15 @@ public class StatusPane {
     public static final int RIGHT_PANEL_WIDTH = 200;
     public static final int RIGHT_PANEL_PADDING = 10;
     private GridPane ui;
+    private Label nameTextLabel;
+    private Label nameValueLabel;
     private Label healthTextLabel;
     private Label healthValueLabel;
 
     public StatusPane() {
         ui = new GridPane();
+        nameTextLabel = new Label("Name: ");
+        nameValueLabel = new Label();
         healthTextLabel = new Label("Health: ");
         healthValueLabel = new Label();
     }
@@ -23,8 +27,10 @@ public class StatusPane {
         ui.setPrefWidth(RIGHT_PANEL_WIDTH);
         ui.setPadding(new Insets(RIGHT_PANEL_PADDING));
 
-        ui.add(healthTextLabel, 0, 0);
-        ui.add(healthValueLabel, 1, 0);
+        ui.add(nameTextLabel, 0, 0);
+        ui.add(nameValueLabel, 1, 0);
+        ui.add(healthTextLabel, 0, 1);
+        ui.add(healthValueLabel, 1, 1);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setRight(ui);
@@ -33,5 +39,9 @@ public class StatusPane {
 
     public void setHealthValue(String text) {
         healthValueLabel.setText(text);
+    }
+
+    public void setNameValue(String text) {
+        nameValueLabel.setText(text);
     }
 }
