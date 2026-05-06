@@ -23,6 +23,7 @@ public class UI {
     private GameLogic logic;
     private Renderer renderer;
     private Set<KeyHandler> keyHandlers;
+    private Camera camera;
 
     public static final int CHUNK_SIZE = Chunk.SIZE;
 
@@ -36,8 +37,13 @@ public class UI {
 
         this.context = canvas.getGraphicsContext2D();
         this.mainStage = new MainStage(canvas);
+        this.camera = new Camera(
+                (int)(canvas.getWidth() / Tiles.TILE_WIDTH),
+                (int)(canvas.getHeight() / Tiles.TILE_WIDTH),
+                logic.getMap()
+        );
 
-        this.renderer = new Renderer(context, logic);
+        this.renderer = new Renderer(context, logic, camera);
     }
 
     public void setUpPain(Stage primaryStage) {
@@ -59,13 +65,9 @@ public class UI {
 
         Player player = logic.getMap().getPlayer();
 
-        int chunkX = player.getX() / Chunk.SIZE;
-        int chunkY = player.getY() / Chunk.SIZE;
+        renderer.getCamera().follow(player.getX(), player.getY());
 
-        int startX = chunkX * Chunk.SIZE;
-        int startY = chunkY * Chunk.SIZE;
-
-        renderer.render(startX, startY);
+        renderer.render();
 
         mainStage.setHealthLabelText(logic.getPlayerHealth());
     }
