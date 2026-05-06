@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.ui.elements;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
+import com.codecool.dungeoncrawl.data.Item;
+import java.util.List;
 
 public class MainStage {
     private Canvas canvas;
@@ -28,5 +30,9 @@ public class MainStage {
 
     public void setHealthLabelText(String text) {
         this.statusPane.setHealthValue(text);
+    }
+
+    public void setInventoryLabelText(List<Item> items) {
+        this.statusPane.setInventoryValue(items);
     }
 }
