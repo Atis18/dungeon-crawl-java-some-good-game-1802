@@ -55,11 +55,12 @@ public class UI {
                 Cell cell = logic.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
+                } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
         mainStage.setHealthLabelText(logic.getPlayerHealth());
+        mainStage.setInventoryLabelText(logic.getPlayerInventory());
     }
 }

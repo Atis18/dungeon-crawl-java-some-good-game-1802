@@ -2,6 +2,9 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.data.GameMap;
+import com.codecool.dungeoncrawl.data.Item;
+
+import java.util.List;
 import com.codecool.dungeoncrawl.data.actors.Player;
 import com.codecool.dungeoncrawl.data.gamestate.GameState;
 import com.codecool.dungeoncrawl.data.gamestate.GameStateHandler;
@@ -60,4 +63,9 @@ public class GameLogic {
             map.getPlayer().setHealth(state.playerHealth);
         }
     }
+
+    public List<Item> getPlayerInventory() {    // ez legyen BENT
+        return map.getPlayer().getInventory();
+    }
+
 }
