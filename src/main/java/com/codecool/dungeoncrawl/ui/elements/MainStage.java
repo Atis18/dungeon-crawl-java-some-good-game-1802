@@ -35,4 +35,8 @@ public class MainStage {
     public void setInventoryLabelText(List<Item> items) {
         this.statusPane.setInventoryValue(items);
     }
+
+    public void setNameLabelText(String text) {
+        this.statusPane.setNameValue(text);
+    }
 }
