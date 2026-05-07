@@ -46,12 +46,13 @@ public class Renderer {
 
                 Cell cell = logic.getCell(worldX, worldY);
 
-                Tiles.drawTile(
-                        gc,
-                        cell.getActor() != null ? cell.getActor() : cell,
-                        x,
-                        y
-                );
+                if (cell.getActor() != null) {
+                    Tiles.drawTile(gc, cell.getActor(), x, y);
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(gc, cell.getItem(), x, y);
+                } else {
+                    Tiles.drawTile(gc, cell, x, y);
+                }
             }
         }
     }

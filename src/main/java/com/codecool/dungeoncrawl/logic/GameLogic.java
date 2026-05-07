@@ -79,9 +79,7 @@ public class GameLogic {
     public void saveGame(){
         Player player = map.getPlayer();
         GameStateHandler handler = new GameStateHandler();
-
-        handler.saveToDB(map.toMapString(), player.getX(), player.getY(), player.getHealth());
-        System.out.println("Game saved");
+        handler.saveToDB(map.toMapString(), player.getX(), player.getY(), player.getHealth(), getPlayerInventory());
     }
 
     public void loadGame(){
@@ -91,6 +89,9 @@ public class GameLogic {
         if (state != null){
             this.map = MapLoader.loadMap(state.map);
             map.getPlayer().setHealth(state.playerHealth);
+            for (String itemName : state.inventory) {
+                map.getPlayer().loadItemToInventory(itemName);
+            }
         }
     }
 

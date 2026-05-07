@@ -52,11 +52,11 @@ MapLoader {
                             map.setPlayer(new Player(cell));
                             break;
                         case 'k':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.KEY);
                             cell.setItem(new Key());
                             break;
                         case 'w':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(CellType.SWORD);
                             cell.setItem(new Sword());
                             break;
                         default:
@@ -101,6 +101,14 @@ MapLoader {
                         case 'l':
                             cell.setType(CellType.LOAD);
                             break;
+                        case 'k':
+                            cell.setType(CellType.KEY);
+                            cell.setItem(new Key());
+                            break;
+                        case 'w':
+                            cell.setType(CellType.SWORD);
+                            cell.setItem(new Sword());
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             mapFromSQL.setPlayer(new Player(cell));
@@ -113,5 +121,4 @@ MapLoader {
         }
         return mapFromSQL;
     }
-
 }
