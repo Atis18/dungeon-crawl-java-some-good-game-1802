@@ -37,8 +37,8 @@ public class StatusPane {
         ui.add(nameValueLabel, 1, 0);
         ui.add(healthTextLabel, 0, 1);
         ui.add(healthValueLabel, 1, 1);
-        ui.add(inventoryTextLabel, 0, 1);
-        ui.add(inventoryValueLabel, 1, 1);
+        ui.add(inventoryTextLabel, 0, 2);
+        ui.add(inventoryValueLabel, 1, 2);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setRight(ui);

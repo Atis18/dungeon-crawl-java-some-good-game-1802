@@ -62,6 +62,11 @@ public class Player extends Actor {
                 nextCell.setType(CellType.FLOOR);
             }
         }
+
+        if(nextCell.getActor() != null) {
+            GameLogic.getLogic().fight(this, nextCell.getActor());
+            return;
+        }
         super.move(dx, dy);
     }
 
