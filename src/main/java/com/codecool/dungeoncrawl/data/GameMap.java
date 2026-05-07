@@ -73,6 +73,10 @@ public class GameMap {
                 return 'f';
             case LOAD:
                 return 'l';
+            case SWORD:
+                return 'w';
+            case KEY:
+                return 'k';
             default:
                 throw new RuntimeException("Unknown cell type: " + type);
         }

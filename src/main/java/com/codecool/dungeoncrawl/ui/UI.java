@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.ui;
 
-import com.codecool.dungeoncrawl.data.Chunk;
+//import com.codecool.dungeoncrawl.data.Chunk;
 import com.codecool.dungeoncrawl.data.actors.Player;
 import com.codecool.dungeoncrawl.logic.GameLogic;
 import com.codecool.dungeoncrawl.ui.elements.MainStage;
@@ -24,7 +24,7 @@ public class UI {
     private Set<KeyHandler> keyHandlers;
     private Camera camera;
 
-    public static final int CHUNK_SIZE = Chunk.SIZE;
+    public static final int CHUNK_SIZE = 16;
 
     public UI(GameLogic logic, Set<KeyHandler> keyHandlers) {
         this.logic = logic;
