@@ -2,17 +2,15 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.data.GameMap;
+import com.codecool.dungeoncrawl.data.Item;
 import com.codecool.dungeoncrawl.data.actors.Actor;
+import com.codecool.dungeoncrawl.data.actors.Player;
 import com.codecool.dungeoncrawl.data.actors.Skeleton;
+import com.codecool.dungeoncrawl.data.gamestate.GameState;
+import com.codecool.dungeoncrawl.data.gamestate.GameStateHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.codecool.dungeoncrawl.data.Item;
-
-import java.util.List;
-import com.codecool.dungeoncrawl.data.actors.Player;
-import com.codecool.dungeoncrawl.data.gamestate.GameState;
-import com.codecool.dungeoncrawl.data.gamestate.GameStateHandler;
 
 public class GameLogic {
     private static GameLogic logic;
@@ -28,6 +26,7 @@ public class GameLogic {
     }
 
     public GameLogic(GameMap map) {
+        logic = this;
         this.map = map;
     }
 
@@ -67,9 +66,18 @@ public class GameLogic {
     }
 
     public void makeMonstersAct() {
-        for (Skeleton skeleton : getMonsters()) {
-            skeleton.takeTurn(map.getPlayer());
+        if (isGameOver()) {
+            return;
         }
+
+        Skeleton monster = getClosestMonster();
+        if (monster != null) {
+            monster.takeTurn(map.getPlayer());
+        }
+    }
+
+    public boolean isGameOver() {
+        return !map.getPlayer().isAlive();
     }
 
     public GameMap getMap() {
@@ -112,5 +120,21 @@ public class GameLogic {
         }
 
         return monsters;
+    }
+
+    private Skeleton getClosestMonster() {
+        Skeleton closestMonster = null;
+        int closestDistance = Integer.MAX_VALUE;
+        Player player = map.getPlayer();
+
+        for (Skeleton monster : getMonsters()) {
+            int distance = Math.abs(player.getX() - monster.getX()) + Math.abs(player.getY() - monster.getY());
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestMonster = monster;
+            }
+        }
+
+        return closestMonster;
     }
 }

@@ -57,6 +57,7 @@ public class UI {
         for (KeyHandler keyHandler : keyHandlers) {
             keyHandler.perform(keyEvent, logic.getMap());
         }
+        logic.makeMonstersAct();
         refresh();
     }
 
@@ -68,6 +69,7 @@ public class UI {
 
         renderer.render();
 
+        mainStage.setNameLabelText(logic.getPlayerName());
         mainStage.setHealthLabelText(logic.getPlayerHealth());
         mainStage.setInventoryLabelText(logic.getPlayerInventory());
     }

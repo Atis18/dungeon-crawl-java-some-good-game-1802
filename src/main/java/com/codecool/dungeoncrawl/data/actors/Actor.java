@@ -22,6 +22,12 @@ public abstract class Actor implements Drawable {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
+            if(nextCell.getType() == CellType.SAVE){
+                GameLogic.getLogic().saveGame();
+            }
+            if(nextCell.getType() == CellType.LOAD){
+                GameLogic.getLogic().loadGame();
+            }
         }
     }
 

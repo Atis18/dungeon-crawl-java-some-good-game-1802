@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Actor {
-    public static final String DEFAULT_NAME = "Player";
-    private static final int DEFAULT_HEALTH = 20;
+    private static final String DEFAULT_NAME = "Player";
+    private static final int DEFAULT_HEALTH = 100;
     private static final int DEFAULT_ATTACK_POWER = 5;
     private static final int DEFAULT_ATTACK_RANGE = 1;
 
@@ -30,6 +30,10 @@ public class Player extends Actor {
         setAttackPower(DEFAULT_ATTACK_POWER);
         setAttackRange(DEFAULT_ATTACK_RANGE);
         setName(name);
+    }
+
+    public static String getDefaultName() {
+        return DEFAULT_NAME;
     }
 
     public String getName() {
@@ -63,7 +67,7 @@ public class Player extends Actor {
             }
         }
 
-        if(nextCell.getActor() != null) {
+        if (nextCell.getActor() != null) {
             GameLogic.getLogic().fight(this, nextCell.getActor());
             return;
         }
