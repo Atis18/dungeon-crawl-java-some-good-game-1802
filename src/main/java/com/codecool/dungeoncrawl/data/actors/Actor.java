@@ -6,6 +6,8 @@ import com.codecool.dungeoncrawl.data.Drawable;
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
+    private int attackPower = 1;
+    private int attackRange = 1;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -23,6 +25,46 @@ public abstract class Actor implements Drawable {
         return health;
     }
 
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public int getAttackRange() {
+        return attackRange;
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    public void attack(Actor target) {
+        if (target == null || !isInAttackRange(target) || !isAlive()) {
+            return;
+        }
+
+        target.takeDamage(attackPower);
+    }
+
+    public void takeDamage(int damage) {
+        if (damage <= 0 || !isAlive()) {
+            return;
+        }
+
+        health = Math.max(0, health - damage);
+        if (health == 0) {
+            die();
+        }
+    }
+
+    public boolean isInAttackRange(Actor target) {
+        if (target == null) {
+            return false;
+        }
+
+        int distance = Math.abs(getX() - target.getX()) + Math.abs(getY() - target.getY());
+        return distance <= attackRange;
+    }
+
     public Cell getCell() {
         return cell;
     }
@@ -33,5 +75,21 @@ public abstract class Actor implements Drawable {
 
     public int getY() {
         return cell.getY();
+    }
+
+    public void setHealth(int health) {
+        this.health = Math.max(1, health);
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = Math.max(1, attackPower);
+    }
+
+    public void setAttackRange(int attackRange) {
+        this.attackRange = Math.max(1, attackRange);
+    }
+
+    public void die() {
+        cell.setActor(null);
     }
 }
