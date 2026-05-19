@@ -8,6 +8,9 @@ import com.codecool.dungeoncrawl.data.actors.Player;
 import com.codecool.dungeoncrawl.data.actors.Skeleton;
 import com.codecool.dungeoncrawl.data.gamestate.GameState;
 import com.codecool.dungeoncrawl.data.gamestate.GameStateHandler;
+import com.codecool.dungeoncrawl.logic.map_generation.FixedSpawn;
+import com.codecool.dungeoncrawl.logic.map_generation.MapGenerator;
+import com.codecool.dungeoncrawl.logic.map_generation.RegionSpawn;
 
 import java.util.ArrayList;
 import java.util.List;
