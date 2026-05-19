@@ -23,7 +23,7 @@ public class Game extends Application {
     public void start(Stage primaryStage) throws Exception {
         DatabaseManager.initializeDatabase();
 
-        this.keyHandlers = Set.of(new Up(), new Down(), new Left(), new Right());
+        this.keyHandlers = Set.of(new Up(), new Down(), new Left(), new Right(), new Heal());
         this.logic = new GameLogic();
         logic.setPlayerName(askPlayerName());
         this.ui = new UI(logic, keyHandlers);

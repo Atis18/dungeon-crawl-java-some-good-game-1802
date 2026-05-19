@@ -15,6 +15,7 @@ public class Player extends Actor {
     private static final int DEFAULT_HEALTH = 100;
     private static final int DEFAULT_ATTACK_POWER = 5;
     private static final int DEFAULT_ATTACK_RANGE = 1;
+    private boolean healUsed = false;
 
     private String name;
 
@@ -87,6 +88,12 @@ public class Player extends Actor {
                 inventory.add(new Key());
                 break;
         }
+    }
+
+    public void heal() {
+        if (healUsed) return;
+        setHealth(getHealth() + 20);
+        healUsed = true;
     }
 
     @Override

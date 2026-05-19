@@ -13,22 +13,24 @@ import java.util.List;
 public class GameStateHandler {
     Connection conn = null;
 
-    public void saveToDB(String map, int player_x, int player_y, int player_health, List<Item> playerInventory){
+    public void saveToDB(String map, String player_name, int player_x, int player_y, int player_health, List<Item> playerInventory){
         try {
             conn = DatabaseManager.getConnection();
 
-            PreparedStatement gameState = conn.prepareStatement("insert into game_state(id, map, player_x, player_y, player_health) values (?,?,?,?,?)" +
+            PreparedStatement gameState = conn.prepareStatement("insert into game_state(id, map, player_name, player_x, player_y, player_health) values (?,?,?,?,?,?)" +
                     "on conflict (id) do update set " +
                     "map = EXCLUDED.map,\n" +
+                    "player_name = EXCLUDED.player_name,\n" +
                     "player_x = EXCLUDED.player_x,\n" +
                     "player_y = EXCLUDED.player_y,\n" +
                     "player_health = EXCLUDED.player_health");
             {
                 gameState.setInt(1, 1);
                 gameState.setString(2, map);
-                gameState.setInt(3, player_x);
-                gameState.setInt(4, player_y);
-                gameState.setInt(5, player_health);
+                gameState.setString(3, player_name);
+                gameState.setInt(4, player_x);
+                gameState.setInt(5, player_y);
+                gameState.setInt(6, player_health);
                 gameState.addBatch();
             }
             gameState.executeBatch();
@@ -66,6 +68,7 @@ public class GameStateHandler {
 
             if (gsResult.next()){
                 String map = gsResult.getString("map");
+                String player_name = gsResult.getString("player_name");
                 int playerX = gsResult.getInt("player_x");
                 int playerY = gsResult.getInt("player_y");
                 int playerHealth = gsResult.getInt("player_health");
@@ -81,7 +84,7 @@ public class GameStateHandler {
 
 
             conn.close();
-            return new GameState(map, playerX, playerY, playerHealth, inventoryItems);
+            return new GameState(map, player_name, playerX, playerY, playerHealth, inventoryItems);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

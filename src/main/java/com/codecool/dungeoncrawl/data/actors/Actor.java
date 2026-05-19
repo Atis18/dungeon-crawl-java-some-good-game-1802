@@ -10,6 +10,7 @@ public abstract class Actor implements Drawable {
     private int health = 10;
     private int attackPower = 1;
     private int attackRange = 1;
+    private int armor = 0;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -56,6 +57,10 @@ public abstract class Actor implements Drawable {
     }
 
     public void takeDamage(int damage) {
+        if (armor > 0) {
+            armor--;
+            return;
+        }
         if (damage <= 0 || !isAlive()) {
             return;
         }
@@ -64,6 +69,9 @@ public abstract class Actor implements Drawable {
         if (health == 0) {
             die();
         }
+    }
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
 
     public boolean isInAttackRange(Actor target) {

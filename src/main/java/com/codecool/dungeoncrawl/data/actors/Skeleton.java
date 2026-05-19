@@ -16,6 +16,10 @@ public class Skeleton extends Actor {
         setHealth(monsterType.getHealth());
         setAttackPower(monsterType.getAttackPower());
         setAttackRange(monsterType.getAttackRange());
+
+        if (monsterType == MonsterTypes.FIGHTER) {
+            setArmor(2);
+        }
     }
 
     public MonsterTypes getMonsterType() {
