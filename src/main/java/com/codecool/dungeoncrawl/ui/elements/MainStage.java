@@ -11,6 +11,10 @@ public class MainStage {
     private Scene scene;
     private StatusPane statusPane;
 
+    public void setEquipmentLabelText(String text) {
+        this.statusPane.setEquipmentValue(text);
+    }
+
     public MainStage(Canvas canvas) {
         this.canvas = canvas;
         statusPane = new StatusPane();

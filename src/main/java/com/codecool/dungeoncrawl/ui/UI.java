@@ -72,5 +72,7 @@ public class UI {
         mainStage.setNameLabelText(logic.getPlayerName());
         mainStage.setHealthLabelText(logic.getPlayerHealth());
         mainStage.setInventoryLabelText(logic.getPlayerInventory());
+        String equipment = logic.getMap().getPlayer().getEquippedArmor() != null ? "Armor" : "None";
+        mainStage.setEquipmentLabelText(equipment);
     }
 }
