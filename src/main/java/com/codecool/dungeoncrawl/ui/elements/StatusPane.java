@@ -18,6 +18,8 @@ public class StatusPane {
     private Label healthValueLabel;
     private Label inventoryTextLabel;
     private Label inventoryValueLabel;
+    private Label healTextLabel;
+    private Label healValueLabel;
 
     public StatusPane() {
         ui = new GridPane();
@@ -27,6 +29,8 @@ public class StatusPane {
         healthValueLabel = new Label();
         inventoryTextLabel = new Label("Inventory: ");
         inventoryValueLabel = new Label();
+        healTextLabel = new Label("Ability: ");
+        healValueLabel = new Label();
     }
 
     public BorderPane build() {
@@ -39,6 +43,8 @@ public class StatusPane {
         ui.add(healthValueLabel, 1, 1);
         ui.add(inventoryTextLabel, 0, 2);
         ui.add(inventoryValueLabel, 1, 2);
+        ui.add(healTextLabel, 0, 3);
+        ui.add(healValueLabel, 1, 3);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setRight(ui);
@@ -58,5 +64,13 @@ public class StatusPane {
 
     public void setNameValue(String text) {
         nameValueLabel.setText(text);
+    }
+
+    public void setHealValue(boolean healUsed, boolean hasHealPotion) {
+        if (!healUsed && hasHealPotion) {
+            healValueLabel.setText("Available (H)");
+        } else {
+            healValueLabel.setText("");
+        }
     }
 }

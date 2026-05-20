@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.data.actors;
 import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.data.CellType;
 import com.codecool.dungeoncrawl.data.Item;
+import com.codecool.dungeoncrawl.data.items.HealPotion;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
 import com.codecool.dungeoncrawl.logic.GameLogic;
@@ -63,7 +64,7 @@ public class Player extends Actor {
         if (nextCell.getItem() != null) {
             inventory.add(nextCell.getItem());
             nextCell.setItem(null);
-            if (nextCell.getType() == CellType.SWORD || nextCell.getType() == CellType.KEY) {
+            if (nextCell.getType() == CellType.SWORD || nextCell.getType() == CellType.KEY || nextCell.getType() == CellType.HEALPOTION ) {
                 nextCell.setType(CellType.FLOOR);
             }
         }
@@ -87,13 +88,27 @@ public class Player extends Actor {
             case "key":
                 inventory.add(new Key());
                 break;
+            case "healpotion":
+                inventory.add(new HealPotion());
+                break;
         }
     }
 
     public void heal() {
         if (healUsed) return;
+
+        boolean hasPotion = inventory.stream()
+                .anyMatch(item -> item.getName().equals("HealPotion"));
+
+        if (!hasPotion) return;
+
         setHealth(getHealth() + 20);
         healUsed = true;
+        inventory.removeIf(item -> item.getName().equals("HealPotion"));
+    }
+
+    public boolean isHealUsed() {
+        return healUsed;
     }
 
     @Override

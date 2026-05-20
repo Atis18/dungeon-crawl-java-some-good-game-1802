@@ -72,5 +72,8 @@ public class UI {
         mainStage.setNameLabelText(logic.getPlayerName());
         mainStage.setHealthLabelText(logic.getPlayerHealth());
         mainStage.setInventoryLabelText(logic.getPlayerInventory());
+        boolean hasHealPotion = player.getInventory().stream()
+                .anyMatch(item -> item.getName().equals("HealPotion"));
+        mainStage.setHealLabelText(player.isHealUsed(), hasHealPotion);
     }
 }

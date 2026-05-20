@@ -77,6 +77,8 @@ public class GameMap {
                 return 'w';
             case KEY:
                 return 'k';
+            case HEALPOTION:
+                return 'h';
             default:
                 throw new RuntimeException("Unknown cell type: " + type);
         }

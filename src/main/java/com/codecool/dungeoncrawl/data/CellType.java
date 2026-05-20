@@ -7,7 +7,9 @@ public enum CellType {
     SAVE("save"),
     LOAD("load"),
     SWORD("sword"),
-    KEY("key");
+    KEY("key"),
+    HEALPOTION("healpotion");
+
 
     private final String tileName;
 
