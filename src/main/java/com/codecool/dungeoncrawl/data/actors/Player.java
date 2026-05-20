@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.data.actors;
 import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.data.CellType;
 import com.codecool.dungeoncrawl.data.Item;
+import com.codecool.dungeoncrawl.data.items.HealthPotion;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
 import com.codecool.dungeoncrawl.logic.GameLogic;
@@ -61,7 +62,12 @@ public class Player extends Actor {
         }
 
         if (nextCell.getItem() != null) {
-            inventory.add(nextCell.getItem());
+            Item item = nextCell.getItem();
+            if (item instanceof HealthPotion) {
+                ((HealthPotion) item).use(this);
+            } else {
+                inventory.add(item);
+            }
             nextCell.setItem(null);
             if (nextCell.getType() == CellType.SWORD || nextCell.getType() == CellType.KEY) {
                 nextCell.setType(CellType.FLOOR);

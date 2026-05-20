@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.data.CellType;
 import com.codecool.dungeoncrawl.data.GameMap;
 import com.codecool.dungeoncrawl.data.actors.Player;
 import com.codecool.dungeoncrawl.data.actors.Skeleton;
+import com.codecool.dungeoncrawl.data.items.HealthPotion;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
 
@@ -58,6 +59,10 @@ MapLoader {
                         case 'w':
                             cell.setType(CellType.SWORD);
                             cell.setItem(new Sword());
+                            break;
+                        case 'h':
+                            cell.setType(CellType.FLOOR);
+                            cell.setItem(new HealthPotion());
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
