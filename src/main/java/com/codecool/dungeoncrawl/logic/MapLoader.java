@@ -1,12 +1,8 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.data.Cell;
-import com.codecool.dungeoncrawl.data.CellType;
+import com.codecool.dungeoncrawl.data.cells.Cell;
+import com.codecool.dungeoncrawl.data.cells.CellType;
 import com.codecool.dungeoncrawl.data.GameMap;
-import com.codecool.dungeoncrawl.data.actors.Player;
-import com.codecool.dungeoncrawl.data.actors.Skeleton;
-import com.codecool.dungeoncrawl.data.items.Key;
-import com.codecool.dungeoncrawl.data.items.Sword;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -46,52 +42,6 @@ public class MapLoader {
     }
 
     public static void processCell(char symbol, Cell cell, GameMap map) {
-        switch (symbol) {
-
-            case ' ':
-                cell.setType(CellType.EMPTY);
-                break;
-
-            case '#':
-                cell.setType(CellType.WALL);
-                break;
-
-            case '.':
-                cell.setType(CellType.FLOOR);
-                break;
-
-            case 's':
-                cell.setType(CellType.FLOOR);
-                new Skeleton(cell);
-                break;
-
-            case 'f':
-                cell.setType(CellType.SAVE);
-                break;
-
-            case 'l':
-                cell.setType(CellType.LOAD);
-                break;
-
-            case '@':
-                cell.setType(CellType.FLOOR);
-                map.setPlayer(new Player(cell));
-                break;
-
-            case 'k':
-                cell.setType(CellType.KEY);
-                cell.setItem(new Key());
-                break;
-
-            case 'w':
-                cell.setType(CellType.SWORD);
-                cell.setItem(new Sword());
-                break;
-
-            default:
-                throw new RuntimeException(
-                        "Unrecognized character: '" + symbol + "'"
-                );
-        }
+        CellType.fromSymbol(symbol).apply(cell, map);
     }
 }

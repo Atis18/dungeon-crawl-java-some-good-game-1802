@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class DatabaseManager {
     private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/dungeon";
     private static final String DATABASE_USER = "postgres";
-    private static final String DATABASE_PASSWORD = "";// create a database on your pc called "dungeon", and add your password in this line
+    private static final String DATABASE_PASSWORD = "2002attila";// create a database on your pc called "dungeon", and add your password in this line
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(

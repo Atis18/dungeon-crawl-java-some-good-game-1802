@@ -1,5 +1,8 @@
-package com.codecool.dungeoncrawl.data;
+package com.codecool.dungeoncrawl.data.cells;
 
+import com.codecool.dungeoncrawl.data.Drawable;
+import com.codecool.dungeoncrawl.data.GameMap;
+import com.codecool.dungeoncrawl.data.Item;
 import com.codecool.dungeoncrawl.data.actors.Actor;
 
 public class Cell implements Drawable {

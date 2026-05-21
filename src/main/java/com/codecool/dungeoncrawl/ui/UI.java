@@ -58,6 +58,14 @@ public class UI {
             keyHandler.perform(keyEvent, logic.getMap());
         }
         logic.makeMonstersAct();
+
+        Player player = logic.getMap().getPlayer();
+
+        if (player.steppedOnDoorWithKey()) {
+            player.resetDoorFlag();
+            logic.nextMap();
+        }
+
         refresh();
     }
 

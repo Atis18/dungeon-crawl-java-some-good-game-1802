@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.ui;
 
-import com.codecool.dungeoncrawl.data.Cell;
+import com.codecool.dungeoncrawl.data.cells.Cell;
 import com.codecool.dungeoncrawl.logic.GameLogic;
 
 import javafx.scene.canvas.GraphicsContext;

@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.data.actors;
 
-import com.codecool.dungeoncrawl.data.Cell;
-import com.codecool.dungeoncrawl.data.CellType;
+import com.codecool.dungeoncrawl.data.cells.Cell;
+import com.codecool.dungeoncrawl.data.cells.CellType;
 import com.codecool.dungeoncrawl.data.Item;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
@@ -17,6 +17,8 @@ public class Player extends Actor {
     private static final int DEFAULT_ATTACK_RANGE = 1;
 
     private String name;
+
+    private boolean steppedOnDoorWithKey = false;
 
     private List<Item> inventory = new ArrayList<>();
 
@@ -48,6 +50,17 @@ public class Player extends Actor {
     @Override
     public void move(int dx, int dy) {
         Cell nextCell = getCell().getNeighbor(dx, dy);
+
+/*        if (nextCell.getType() == CellType.DOOR) {
+
+            if (hasKey()) {
+
+                removeKey();
+                steppedOnDoorWithKey = true;
+
+                return;
+            }
+        }*/
 
         if (nextCell.getType() == CellType.SAVE) {
             GameLogic.getLogic().saveGame();
@@ -92,5 +105,13 @@ public class Player extends Actor {
     @Override
     public String getTileName() {
         return "player";
+    }
+
+    public boolean steppedOnDoorWithKey() {
+        return steppedOnDoorWithKey;
+    }
+
+    public void resetDoorFlag() {
+        steppedOnDoorWithKey = false;
     }
 }
