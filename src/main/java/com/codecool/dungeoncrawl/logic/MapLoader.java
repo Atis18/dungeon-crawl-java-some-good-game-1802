@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.data.actors.Skeleton;
 import com.codecool.dungeoncrawl.data.items.HealPotion;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
+import com.codecool.dungeoncrawl.data.items.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -38,9 +39,11 @@ MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case 'i':
                         case 's':
+                        case 'm':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            Skeleton.spawn(cell, line.charAt(x));
                             break;
                         case 'f':
                             cell.setType(CellType.SAVE);
@@ -63,6 +66,14 @@ MapLoader {
                         case 'h':
                             cell.setType(CellType.HEALPOTION);
                             cell.setItem(new HealPotion());
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            cell.setItem(new Bomb());
+                            break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            cell.setItem(new Armor());
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
@@ -96,9 +107,11 @@ MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case 'i':
                         case 's':
+                        case 'm':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            Skeleton.spawn(cell, line.charAt(x));
                             break;
                         case 'f':
                             cell.setType(CellType.SAVE);

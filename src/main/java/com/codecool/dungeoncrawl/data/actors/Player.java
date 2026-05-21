@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.data.actors;
 import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.data.CellType;
 import com.codecool.dungeoncrawl.data.Item;
+import com.codecool.dungeoncrawl.data.items.Armor;
+import com.codecool.dungeoncrawl.data.items.HealthPotion;
 import com.codecool.dungeoncrawl.data.items.HealPotion;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
@@ -21,6 +23,17 @@ public class Player extends Actor {
     private String name;
 
     private List<Item> inventory = new ArrayList<>();
+
+    private Armor equippedArmor = null;
+
+    public void equipArmor(Armor armor) {
+        equippedArmor = armor;
+        setArmor(armor.getDefense());
+    }
+
+    public Armor getEquippedArmor() {
+        return equippedArmor;
+    }
 
     public Player(Cell cell) {
         this(cell, DEFAULT_NAME);
@@ -62,7 +75,12 @@ public class Player extends Actor {
         }
 
         if (nextCell.getItem() != null) {
-            inventory.add(nextCell.getItem());
+            Item item = nextCell.getItem();
+            if (item instanceof Armor) {
+                equipArmor((Armor) item);
+            } else {
+                inventory.add(item);
+            }
             nextCell.setItem(null);
             if (nextCell.getType() == CellType.SWORD || nextCell.getType() == CellType.KEY || nextCell.getType() == CellType.HEALPOTION ) {
                 nextCell.setType(CellType.FLOOR);
@@ -80,8 +98,8 @@ public class Player extends Actor {
         return inventory;
     }
 
-    public void loadItemToInventory(String name){
-        switch (name.toLowerCase()){
+    public void loadItemToInventory(String name) {
+        switch (name.toLowerCase()) {
             case "sword":
                 inventory.add(new Sword());
                 break;
@@ -113,6 +131,6 @@ public class Player extends Actor {
 
     @Override
     public String getTileName() {
-        return "player";
+        return equippedArmor != null ? "player_armored" : "player";
     }
 }

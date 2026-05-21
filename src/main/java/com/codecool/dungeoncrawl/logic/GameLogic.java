@@ -72,7 +72,7 @@ public class GameLogic {
 
         Skeleton monster = getClosestMonster();
         if (monster != null) {
-            monster.takeTurn(map.getPlayer());
+            monster.act(map.getPlayer());
         }
     }
 
@@ -82,6 +82,12 @@ public class GameLogic {
 
     public GameMap getMap() {
         return map;
+    }
+
+    public void restartGame() {
+        String playerName = getPlayerName();
+        this.map = MapLoader.loadMap();
+        setPlayerName(playerName);
     }
 
     public void saveGame(){

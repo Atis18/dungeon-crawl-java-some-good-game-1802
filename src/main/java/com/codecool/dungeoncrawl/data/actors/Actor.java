@@ -57,15 +57,12 @@ public abstract class Actor implements Drawable {
     }
 
     public void takeDamage(int damage) {
-        if (armor > 0) {
-            armor--;
-            return;
-        }
         if (damage <= 0 || !isAlive()) {
             return;
         }
 
-        health = Math.max(0, health - damage);
+        int actualDamage = Math.max(0, damage - armor);
+        health = Math.max(0, health - actualDamage);
         if (health == 0) {
             die();
         }
