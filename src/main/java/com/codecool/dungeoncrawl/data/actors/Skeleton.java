@@ -4,6 +4,10 @@ import com.codecool.dungeoncrawl.data.Cell;
 import com.codecool.dungeoncrawl.logic.MonsterTypes;
 
 public class Skeleton extends Actor {
+    private static final char ASSASSIN_MAP_SYMBOL = 'i';
+    private static final char FIGHTER_MAP_SYMBOL = 's';
+    private static final char MAGE_MAP_SYMBOL = 'm';
+
     private final MonsterTypes monsterType;
 
     public Skeleton(Cell cell) {
@@ -26,23 +30,48 @@ public class Skeleton extends Actor {
         return monsterType;
     }
 
-    public void takeTurn(Player player) {
+    public static boolean isMonsterSymbol(char mapSymbol) {
+        return mapSymbol == ASSASSIN_MAP_SYMBOL || mapSymbol == FIGHTER_MAP_SYMBOL || mapSymbol == MAGE_MAP_SYMBOL;
+    }
+
+    public static MonsterTypes getMonsterTypeByMapSymbol(char mapSymbol) {
+        switch (mapSymbol) {
+            case ASSASSIN_MAP_SYMBOL:
+                return MonsterTypes.ASSASSIN;
+            case MAGE_MAP_SYMBOL:
+                return MonsterTypes.MAGE;
+            case FIGHTER_MAP_SYMBOL:
+                return MonsterTypes.FIGHTER;
+            default:
+                throw new IllegalArgumentException("Unknown monster symbol: '" + mapSymbol + "'");
+        }
+    }
+
+    public static Skeleton spawn(Cell cell, char mapSymbol) {
+        return new Skeleton(cell, getMonsterTypeByMapSymbol(mapSymbol));
+    }
+
+    public void act(Player player) {
         if (player == null || !isAlive()) {
             return;
         }
 
         switch (getMonsterType()) {
             case ASSASSIN:
-                playAssassinTurn(player);
+                actAsAssassin(player);
                 break;
             case MAGE:
-                playMageTurn(player);
+                actAsMage(player);
                 break;
             case FIGHTER:
             default:
-                playFighterTurn(player);
+                actAsFighter(player);
                 break;
         }
+    }
+
+    public void takeTurn(Player player) {
+        act(player);
     }
 
     @Override
@@ -50,7 +79,7 @@ public class Skeleton extends Actor {
         return "skeleton";
     }
 
-    private void playAssassinTurn(Player player) {
+    private void actAsAssassin(Player player) {
         for (int step = 0; step < getMonsterType().getMovementSpeed(); step++) {
             if (isInAttackRange(player)) {
                 attack(player);
@@ -65,7 +94,7 @@ public class Skeleton extends Actor {
         attack(player);
     }
 
-    private void playFighterTurn(Player player) {
+    private void actAsFighter(Player player) {
         if (isInAttackRange(player)) {
             attack(player);
             return;
@@ -74,7 +103,7 @@ public class Skeleton extends Actor {
         moveTowards(player);
     }
 
-    private void playMageTurn(Player player) {
+    private void actAsMage(Player player) {
         int distance = getDistanceFrom(player);
 
         if (distance <= 1 && moveAwayFrom(player)) {
@@ -115,8 +144,10 @@ public class Skeleton extends Actor {
         }
 
         try {
+            int oldX = getX();
+            int oldY = getY();
             move(dx, dy);
-            return true;
+            return oldX != getX() || oldY != getY();
         } catch (RuntimeException exception) {
             return false;
         }

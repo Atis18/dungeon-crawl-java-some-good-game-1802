@@ -36,9 +36,11 @@ MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case 'i':
                         case 's':
+                        case 'm':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            Skeleton.spawn(cell, line.charAt(x));
                             break;
                         case 'f':
                             cell.setType(CellType.SAVE);
@@ -102,9 +104,11 @@ MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case 'i':
                         case 's':
+                        case 'm':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            Skeleton.spawn(cell, line.charAt(x));
                             break;
                         case 'f':
                             cell.setType(CellType.SAVE);

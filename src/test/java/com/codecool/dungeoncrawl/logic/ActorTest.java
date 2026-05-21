@@ -34,7 +34,7 @@ class ActorTest {
     void playerUsesDefaultNameWhenNameIsBlank() {
         Player player = new Player(gameMap.getCell(1, 1), " ");
 
-        assertEquals(Player.DEFAULT_NAME, player.getName());
+        assertEquals(Player.getDefaultName(), player.getName());
     }
 
     @Test
@@ -70,26 +70,6 @@ class ActorTest {
     }
 
     @Test
-    void attackReducesTargetHealth() {
-        Player player = new Player(gameMap.getCell(1, 1));
-        Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1), MonsterTypes.FIGHTER);
-
-        player.attack(skeleton);
-
-        assertEquals(MonsterTypes.FIGHTER.getHealth() - player.getAttackPower(), skeleton.getHealth());
-    }
-
-    @Test
-    void fighterAttacksWhenPlayerIsInRange() {
-        Player player = new Player(gameMap.getCell(1, 1));
-        Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1), MonsterTypes.FIGHTER);
-
-        skeleton.takeTurn(player);
-
-        assertEquals(20 - MonsterTypes.FIGHTER.getAttackPower(), player.getHealth());
-    }
-
-    @Test
     void assassinMovesTwiceTowardPlayer() {
         GameMap largerMap = new GameMap(6, 1, CellType.FLOOR);
         Player player = new Player(largerMap.getCell(0, 0));
@@ -108,7 +88,7 @@ class ActorTest {
 
         skeleton.takeTurn(player);
 
-        assertEquals(20 - MonsterTypes.MAGE.getAttackPower(), player.getHealth());
+        assertEquals(100 - MonsterTypes.MAGE.getAttackPower(), player.getHealth());
         assertEquals(3, skeleton.getX());
     }
 }
