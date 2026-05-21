@@ -34,7 +34,7 @@ public class Tiles {
         tileMap.put("skeleton_mage", new Tile(24, 0));
         tileMap.put("save", new Tile(26, 28));
         tileMap.put("load", new Tile(25, 28));
-        tileMap.put("healpotion", new Tile(6, 18));
+        tileMap.put("healpotion", new Tile(26, 22));
         tileMap.put("sword", new Tile(0, 28));
         tileMap.put("key", new Tile(16, 23));
         tileMap.put("bomb", new Tile(13, 31));
