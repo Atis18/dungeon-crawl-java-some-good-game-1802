@@ -1,142 +1,48 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.data.Cell;
-import com.codecool.dungeoncrawl.data.CellType;
-import com.codecool.dungeoncrawl.data.GameMap;
-import com.codecool.dungeoncrawl.data.actors.Player;
 import com.codecool.dungeoncrawl.data.actors.Skeleton;
-import com.codecool.dungeoncrawl.data.items.HealPotion;
-import com.codecool.dungeoncrawl.data.items.Key;
-import com.codecool.dungeoncrawl.data.items.Sword;
-import com.codecool.dungeoncrawl.data.items.*;
+import com.codecool.dungeoncrawl.data.cells.Cell;
+import com.codecool.dungeoncrawl.data.cells.CellType;
+import com.codecool.dungeoncrawl.data.GameMap;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class
-MapLoader {
-    public static GameMap loadMap() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
-        Scanner scanner = new Scanner(is);
-        int width = scanner.nextInt();
-        int height = scanner.nextInt();
-
-        scanner.nextLine(); // empty line
-
-        GameMap map = new GameMap(width, height, CellType.EMPTY);
-        for (int y = 0; y < height; y++) {
-            String line = scanner.nextLine();
-            for (int x = 0; x < width; x++) {
-                if (x < line.length()) {
-                    Cell cell = map.getCell(x, y);
-                    switch (line.charAt(x)) {
-                        case ' ':
-                            cell.setType(CellType.EMPTY);
-                            break;
-                        case '#':
-                            cell.setType(CellType.WALL);
-                            break;
-                        case '.':
-                            cell.setType(CellType.FLOOR);
-                            break;
-                        case 'i':
-                        case 's':
-                        case 'm':
-                            cell.setType(CellType.FLOOR);
-                            Skeleton.spawn(cell, line.charAt(x));
-                            break;
-                        case 'f':
-                            cell.setType(CellType.SAVE);
-                            break;
-                        case 'l':
-                            cell.setType(CellType.LOAD);
-                            break;
-                        case '@':
-                            cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
-                            break;
-                        case 'k':
-                            cell.setType(CellType.KEY);
-                            cell.setItem(new Key());
-                            break;
-                        case 'w':
-                            cell.setType(CellType.SWORD);
-                            cell.setItem(new Sword());
-                            break;
-                        case 'h':
-                            cell.setType(CellType.HEALPOTION);
-                            cell.setItem(new HealPotion());
-                            break;
-                        case 'b':
-                            cell.setType(CellType.FLOOR);
-                            cell.setItem(new Bomb());
-                            break;
-                        case 'a':
-                            cell.setType(CellType.FLOOR);
-                            cell.setItem(new Armor());
-                            break;
-                        default:
-                            throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
-                    }
-                }
-            }
-        }
-        return map;
+public class MapLoader {
+    public static GameMap loadMap(String map) {
+        return loadFromScanner(new Scanner(map));
     }
 
-    public static GameMap loadMap(String map) {
-        Scanner scanner = new Scanner(map);
+    private static GameMap loadFromScanner(Scanner scanner) {
         int width = scanner.nextInt();
         int height = scanner.nextInt();
 
         scanner.nextLine(); // empty line
 
-        GameMap mapFromSQL = new GameMap(width, height, CellType.EMPTY);
+        GameMap gameMap = new GameMap(width, height, CellType.EMPTY);
+
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
+
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
-                    Cell cell = mapFromSQL.getCell(x, y);
-                    switch (line.charAt(x)) {
-                        case ' ':
-                            cell.setType(CellType.EMPTY);
-                            break;
-                        case '#':
-                            cell.setType(CellType.WALL);
-                            break;
-                        case '.':
-                            cell.setType(CellType.FLOOR);
-                            break;
-                        case 'i':
-                        case 's':
-                        case 'm':
-                            cell.setType(CellType.FLOOR);
-                            Skeleton.spawn(cell, line.charAt(x));
-                            break;
-                        case 'f':
-                            cell.setType(CellType.SAVE);
-                            break;
-                        case 'l':
-                            cell.setType(CellType.LOAD);
-                            break;
-                        case 'k':
-                            cell.setType(CellType.KEY);
-                            cell.setItem(new Key());
-                            break;
-                        case 'w':
-                            cell.setType(CellType.SWORD);
-                            cell.setItem(new Sword());
-                            break;
-                        case '@':
-                            cell.setType(CellType.FLOOR);
-                            mapFromSQL.setPlayer(new Player(cell));
-                            break;
-                        default:
-                            throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
-                    }
+                    Cell cell = gameMap.getCell(x, y);
+                    processCell(line.charAt(x), cell, gameMap);
                 }
             }
         }
-        return mapFromSQL;
+
+        scanner.close();
+        return gameMap;
+    }
+
+    public static void processCell(char symbol, Cell cell, GameMap map) {
+        if (Skeleton.isMonsterSymbol(symbol)) {
+            cell.setType(CellType.FLOOR);
+            Skeleton.spawn(cell, symbol);
+            return;
+        }
+
+        CellType.fromSymbol(symbol).apply(cell, map);
     }
 }

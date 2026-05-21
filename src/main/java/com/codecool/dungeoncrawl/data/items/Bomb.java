@@ -1,12 +1,12 @@
 package com.codecool.dungeoncrawl.data.items;
 
-import com.codecool.dungeoncrawl.data.Cell;
+import com.codecool.dungeoncrawl.data.cells.Cell;
 import com.codecool.dungeoncrawl.data.Item;
 import com.codecool.dungeoncrawl.data.actors.Actor;
 import com.codecool.dungeoncrawl.data.actors.Player;
 
 public class Bomb implements Item {
-    private static final int DAMAGE = 50;
+    private static final int DAMAGE = 24;
     private static final int RANGE = 3;
 
     @Override

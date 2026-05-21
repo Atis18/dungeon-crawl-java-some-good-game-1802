@@ -1,7 +1,9 @@
 package com.codecool.dungeoncrawl.ui;
 
 //import com.codecool.dungeoncrawl.data.Chunk;
+
 import com.codecool.dungeoncrawl.data.actors.Player;
+import com.codecool.dungeoncrawl.data.items.HealPotion;
 import com.codecool.dungeoncrawl.logic.GameLogic;
 import com.codecool.dungeoncrawl.ui.elements.MainStage;
 import com.codecool.dungeoncrawl.ui.keyeventhandler.KeyHandler;
@@ -43,8 +45,8 @@ public class UI {
         this.context = canvas.getGraphicsContext2D();
         this.mainStage = new MainStage(canvas);
         this.camera = new Camera(
-                (int)(canvas.getWidth() / Tiles.TILE_WIDTH),
-                (int)(canvas.getHeight() / Tiles.TILE_WIDTH),
+                (int) (canvas.getWidth() / Tiles.TILE_WIDTH),
+                (int) (canvas.getHeight() / Tiles.TILE_WIDTH),
                 logic.getMap()
         );
 
@@ -65,6 +67,15 @@ public class UI {
             keyHandler.perform(keyEvent, logic.getMap());
         }
         logic.makeMonstersAct();
+
+        Player player = logic.getMap().getPlayer();
+
+        if (player.steppedOnDoorWithKey()) {
+            logic.nextMap();
+            renderer.getCamera().setMap(logic.getMap());
+            player.resetDoorFlag();
+        }
+
         refresh();
         showGameOverScreen();
     }
@@ -81,9 +92,15 @@ public class UI {
         mainStage.setHealthLabelText(logic.getPlayerHealth());
         mainStage.setInventoryLabelText(logic.getPlayerInventory());
         boolean hasHealPotion = player.getInventory().stream()
-                .anyMatch(item -> item.getName().equals("HealPotion"));
-        mainStage.setHealLabelText(player.isHealUsed(), hasHealPotion);
-        String equipment = logic.getMap().getPlayer().getEquippedArmor() != null ? "Armor" : "None";
+                .anyMatch(item -> item instanceof HealPotion);
+        mainStage.setHealLabelText(hasHealPotion);
+        String equipment =
+                (player.getEquippedArmor() != null ? "Armor " : "") +
+                        (player.getEquippedSword() != null ? "Sword" : "");
+
+        if (equipment.isBlank()) {
+            equipment = "None";
+        }
         mainStage.setEquipmentLabelText(equipment);
     }
 
@@ -110,6 +127,7 @@ public class UI {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == tryAgainButton) {
             logic.restartGame();
+            renderer.getCamera().setMap(logic.getMap());
             gameOverDialogShowing = false;
             refresh();
             return;

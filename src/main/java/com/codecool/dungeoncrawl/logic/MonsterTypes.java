@@ -1,9 +1,9 @@
 package com.codecool.dungeoncrawl.logic;
 
 public enum MonsterTypes {
-    ASSASSIN(6, 8, 1, 2),
-    FIGHTER(14, 5, 1, 1),
-    MAGE(8, 7, 3, 1);
+    ASSASSIN(6, 6, 1, 2),
+    FIGHTER(12, 3, 1, 1),
+    MAGE(5, 4, 3, 1);
 
     private final int health;
     private final int attackPower;

@@ -1,4 +1,6 @@
 .env
+*.class
+*.log
 target/
 .idea/
 *.iml

@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.data.actors;
 
-import com.codecool.dungeoncrawl.data.Cell;
-import com.codecool.dungeoncrawl.data.CellType;
+import com.codecool.dungeoncrawl.data.cells.Cell;
+import com.codecool.dungeoncrawl.data.cells.CellType;
 import com.codecool.dungeoncrawl.data.Drawable;
 import com.codecool.dungeoncrawl.logic.GameLogic;
 
@@ -34,14 +34,6 @@ public abstract class Actor implements Drawable {
 
     public int getHealth() {
         return health;
-    }
-
-    public int getAttackPower() {
-        return attackPower;
-    }
-
-    public int getAttackRange() {
-        return attackRange;
     }
 
     public boolean isAlive() {

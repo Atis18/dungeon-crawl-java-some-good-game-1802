@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.data;
 
 import com.codecool.dungeoncrawl.data.actors.Player;
+import com.codecool.dungeoncrawl.data.cells.Cell;
+import com.codecool.dungeoncrawl.data.cells.CellType;
 
 public class GameMap {
     private int width;
@@ -79,6 +81,8 @@ public class GameMap {
                 return 'k';
             case HEALPOTION:
                 return 'h';
+            case DOOR:
+                return 'd';
             default:
                 throw new RuntimeException("Unknown cell type: " + type);
         }

@@ -44,7 +44,7 @@ public class MainStage {
         this.statusPane.setNameValue(text);
     }
 
-    public void setHealLabelText(boolean healUsed, boolean hasHealPotion) {
-        this.statusPane.setHealValue(healUsed, hasHealPotion);
+    public void setHealLabelText(boolean hasHealPotion) {
+        this.statusPane.setHealValue(hasHealPotion);
     }
 }

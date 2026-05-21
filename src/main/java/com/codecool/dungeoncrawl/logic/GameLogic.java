@@ -1,13 +1,11 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.data.Cell;
-import com.codecool.dungeoncrawl.data.GameMap;
-import com.codecool.dungeoncrawl.data.Item;
-import com.codecool.dungeoncrawl.data.actors.Actor;
-import com.codecool.dungeoncrawl.data.actors.Player;
-import com.codecool.dungeoncrawl.data.actors.Skeleton;
-import com.codecool.dungeoncrawl.data.gamestate.GameState;
-import com.codecool.dungeoncrawl.data.gamestate.GameStateHandler;
+import com.codecool.dungeoncrawl.data.*;
+import com.codecool.dungeoncrawl.data.actors.*;
+import com.codecool.dungeoncrawl.data.cells.*;
+import com.codecool.dungeoncrawl.data.items.*;
+import com.codecool.dungeoncrawl.data.gamestate.*;
+import com.codecool.dungeoncrawl.logic.map_generation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +14,63 @@ public class GameLogic {
     private static GameLogic logic;
     private GameMap map;
 
+    private MapGenerator mapGenerator;
+
     public GameLogic() {
         logic = this;
-        this.map = MapLoader.loadMap();
+        nextMap();
     }
 
-    public static GameLogic getLogic(){
+    private static int randomInRange(int min, int max) {
+        return min + (int) (Math.random() * (max - min + 1));
+    }
+
+    public void nextMap() {
+
+        int width = randomInRange(50, 120);
+        int height = randomInRange(35, 60);
+
+        List<LootSpawn> loot = List.of(
+                /*new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.SAVE);
+                }, 1),
+
+                new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.LOAD);
+                }, 1),*/
+
+                new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.FLOOR);
+                    cell.setItem(new Sword());
+                }, 1),
+
+                new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.FLOOR);
+                    cell.setItem(new Armor());
+                }, 1),
+
+                new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.FLOOR);
+                    cell.setItem(new Key());
+                }, 1),
+
+                new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.FLOOR);
+                    cell.setItem(new HealPotion());
+                }, 5),
+
+                new LootSpawn((cell, map) -> {
+                    cell.setType(CellType.FLOOR);
+                    cell.setItem(new Bomb());
+                }, 3)
+        );
+
+        this.mapGenerator = new MapGenerator(width, height, loot);
+        this.map = mapGenerator.generate();
+    }
+
+    public static GameLogic getLogic() {
         return logic;
-    }
-
-    public GameLogic(GameMap map) {
-        logic = this;
-        this.map = map;
     }
 
     public double getMapWidth() {
@@ -86,21 +129,21 @@ public class GameLogic {
 
     public void restartGame() {
         String playerName = getPlayerName();
-        this.map = MapLoader.loadMap();
+        nextMap();
         setPlayerName(playerName);
     }
 
-    public void saveGame(){
+    public void saveGame() {
         Player player = map.getPlayer();
         GameStateHandler handler = new GameStateHandler();
         handler.saveToDB(map.toMapString(), player.getName(), player.getX(), player.getY(), player.getHealth(), getPlayerInventory());
     }
 
-    public void loadGame(){
+    public void loadGame() {
         GameStateHandler handler = new GameStateHandler();
         GameState state = handler.loadFromDB();
 
-        if (state != null){
+        if (state != null) {
             this.map = MapLoader.loadMap(state.map);
             map.getPlayer().setHealth(state.playerHealth);
             map.getPlayer().setName(state.player_name);

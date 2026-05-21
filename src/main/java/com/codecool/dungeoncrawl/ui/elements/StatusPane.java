@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 
 public class StatusPane {
-    public static final int RIGHT_PANEL_WIDTH = 200;
+    public static final int RIGHT_PANEL_WIDTH = 250;
     public static final int RIGHT_PANEL_PADDING = 10;
     private GridPane ui;
     private Label nameTextLabel;
@@ -76,8 +76,8 @@ public class StatusPane {
         nameValueLabel.setText(text);
     }
 
-    public void setHealValue(boolean healUsed, boolean hasHealPotion) {
-        if (!healUsed && hasHealPotion) {
+    public void setHealValue(boolean hasHealPotion) {
+        if (hasHealPotion) {
             healValueLabel.setText("Available (H)");
         } else {
             healValueLabel.setText("");

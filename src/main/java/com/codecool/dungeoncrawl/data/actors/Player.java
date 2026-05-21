@@ -1,10 +1,9 @@
 package com.codecool.dungeoncrawl.data.actors;
 
-import com.codecool.dungeoncrawl.data.Cell;
-import com.codecool.dungeoncrawl.data.CellType;
+import com.codecool.dungeoncrawl.data.cells.Cell;
+import com.codecool.dungeoncrawl.data.cells.CellType;
 import com.codecool.dungeoncrawl.data.Item;
 import com.codecool.dungeoncrawl.data.items.Armor;
-import com.codecool.dungeoncrawl.data.items.HealthPotion;
 import com.codecool.dungeoncrawl.data.items.HealPotion;
 import com.codecool.dungeoncrawl.data.items.Key;
 import com.codecool.dungeoncrawl.data.items.Sword;
@@ -18,17 +17,28 @@ public class Player extends Actor {
     private static final int DEFAULT_HEALTH = 100;
     private static final int DEFAULT_ATTACK_POWER = 5;
     private static final int DEFAULT_ATTACK_RANGE = 1;
-    private boolean healUsed = false;
 
     private String name;
 
-    private List<Item> inventory = new ArrayList<>();
+    private boolean steppedOnDoorWithKey = false;
+
+    private final List<Item> inventory = new ArrayList<>();
 
     private Armor equippedArmor = null;
+    private Sword equippedSword = null;
 
     public void equipArmor(Armor armor) {
         equippedArmor = armor;
         setArmor(armor.getDefense());
+    }
+
+    public void equipSword(Sword sword) {
+        equippedSword = sword;
+        setAttackPower(DEFAULT_ATTACK_POWER + 1);
+    }
+
+    public Sword getEquippedSword() {
+        return equippedSword;
     }
 
     public Armor getEquippedArmor() {
@@ -64,6 +74,15 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Cell nextCell = getCell().getNeighbor(dx, dy);
 
+        if (nextCell.getType() == CellType.DOOR) {
+            if (hasKey()) {
+                removeKey();
+                steppedOnDoorWithKey = true;
+                super.move(dx, dy);
+            }
+            return;
+        }
+
         if (nextCell.getType() == CellType.SAVE) {
             GameLogic.getLogic().saveGame();
             return;
@@ -78,11 +97,13 @@ public class Player extends Actor {
             Item item = nextCell.getItem();
             if (item instanceof Armor) {
                 equipArmor((Armor) item);
+            } else if (item instanceof Sword) {
+                equipSword((Sword) item);
             } else {
                 inventory.add(item);
             }
             nextCell.setItem(null);
-            if (nextCell.getType() == CellType.SWORD || nextCell.getType() == CellType.KEY || nextCell.getType() == CellType.HEALPOTION ) {
+            if (nextCell.getType() == CellType.SWORD || nextCell.getType() == CellType.KEY || nextCell.getType() == CellType.HEALPOTION) {
                 nextCell.setType(CellType.FLOOR);
             }
         }
@@ -113,24 +134,48 @@ public class Player extends Actor {
     }
 
     public void heal() {
-        if (healUsed) return;
 
-        boolean hasPotion = inventory.stream()
-                .anyMatch(item -> item.getName().equals("HealPotion"));
+        Item potion = inventory.stream()
+                .filter(item -> item.getName().equals("HealPotion"))
+                .findFirst()
+                .orElse(null);
 
-        if (!hasPotion) return;
+        if (potion == null) {
+            return;
+        }
 
-        setHealth(getHealth() + 20);
-        healUsed = true;
-        inventory.removeIf(item -> item.getName().equals("HealPotion"));
-    }
+        setHealth(Math.min(getHealth() + 20, 100));
 
-    public boolean isHealUsed() {
-        return healUsed;
+        inventory.remove(potion);
     }
 
     @Override
     public String getTileName() {
         return equippedArmor != null ? "player_armored" : "player";
+    }
+
+    public boolean steppedOnDoorWithKey() {
+        return steppedOnDoorWithKey;
+    }
+
+    private boolean hasKey() {
+        return inventory.stream()
+                .anyMatch(item -> item instanceof Key);
+    }
+
+    private void removeKey() {
+
+        Item key = inventory.stream()
+                .filter(item -> item instanceof Key)
+                .findFirst()
+                .orElse(null);
+
+        if (key != null) {
+            inventory.remove(key);
+        }
+    }
+
+    public void resetDoorFlag() {
+        steppedOnDoorWithKey = false;
     }
 }

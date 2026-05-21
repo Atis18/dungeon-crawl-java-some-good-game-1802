@@ -18,6 +18,11 @@ public class Camera {
         this.map = map;
     }
 
+    public void setMap(GameMap map) {
+        this.map = map;
+        clamp();
+    }
+
     public void follow(int targetX, int targetY) {
         x = targetX - viewWidth / 2;
         y = targetY - viewHeight / 2;
