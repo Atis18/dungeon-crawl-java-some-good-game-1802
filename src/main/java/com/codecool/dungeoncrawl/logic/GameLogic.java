@@ -21,6 +21,12 @@ public class GameLogic {
         nextMap();
     }
 
+    // Allows deterministic tests without generating a random map.
+    GameLogic(GameMap map) {
+        this.map = java.util.Objects.requireNonNull(map);
+        logic = this;
+    }
+
     private static int randomInRange(int min, int max) {
         return min + (int) (Math.random() * (max - min + 1));
     }
