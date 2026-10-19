@@ -19,11 +19,11 @@ class CellTest {
     }
 
     @Test
-    void cellOnEdgeHasNoNeighbor() {
-        Cell cell = map.getCell(1, 0);
-        assertEquals(null, cell.getNeighbor(0, -1));
+    void cellOnEdgeReturnsCurrentCell() {
+        Cell topCell = map.getCell(1, 0);
+        assertSame(topCell, topCell.getNeighbor(0, -1));
 
-        cell = map.getCell(1, 2);
-        assertEquals(null, cell.getNeighbor(0, 1));
+        Cell bottomCell = map.getCell(1, 2);
+        assertSame(bottomCell, bottomCell.getNeighbor(0, 1));
     }
 }

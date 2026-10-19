@@ -74,6 +74,10 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Cell nextCell = getCell().getNeighbor(dx, dy);
 
+        if (nextCell == getCell()) {
+            return;
+        }
+
         if (nextCell.getType() == CellType.DOOR) {
             if (hasKey()) {
                 removeKey();
@@ -109,7 +113,7 @@ public class Player extends Actor {
         }
 
         if (nextCell.getActor() != null) {
-            GameLogic.getLogic().fight(this, nextCell.getActor());
+            attack(nextCell.getActor());
             return;
         }
         super.move(dx, dy);
