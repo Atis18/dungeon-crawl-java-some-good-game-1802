@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 
 public class MapGenerator {
 
-    private final Random random = new Random();
+    private final Random random;
 
     private final int width;
     private final int height;
@@ -23,6 +23,11 @@ public class MapGenerator {
     private final List<LootSpawn> lootSpawns = new ArrayList<>();
 
     public MapGenerator(int width, int height, List<LootSpawn> lootSpawns) {
+        this(width, height, lootSpawns, new Random());
+    }
+
+    MapGenerator(int width, int height, List<LootSpawn> lootSpawns, Random random) {
+        this.random = random;
         this.width = width;
         this.height = height;
         this.roomCount = calculateRoomCount();
